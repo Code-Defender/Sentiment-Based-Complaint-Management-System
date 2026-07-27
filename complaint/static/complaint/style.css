@@ -1,0 +1,104 @@
+/* Custom Stylesheet to complement Bootstrap 5 */
+
+:root {
+    --bg-main: #0F172A;
+    --bg-gradient: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                  radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.1) 0px, transparent 50%);
+}
+
+body {
+    background-color: var(--bg-main);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
+    color: #F8FAFC;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Glassmorphism styling overrides for Bootstrap Cards */
+.card-glass {
+    background: rgba(30, 41, 59, 0.45) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-glass:hover {
+    border-color: rgba(99, 102, 241, 0.25) !important;
+    box-shadow: 0 8px 32px 0 rgba(99, 102, 241, 0.05), 0 8px 32px 0 rgba(0, 0, 0, 0.25) !important;
+    transform: translateY(-4px);
+}
+
+/* Custom interactive complaint card click style */
+.complaint-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.complaint-card-link:hover {
+    color: inherit;
+}
+
+/* Custom badges sizing and appearance */
+.badge-custom {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.35em 0.65em;
+    border-radius: 50rem;
+}
+
+/* Navbar logo styling */
+.navbar-brand-custom {
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #6366F1 0%, #A855F7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.navbar-brand-custom::before {
+    content: "⚡ ";
+}
+
+/* Form styling adjustments for dark theme compatibility */
+.form-control, .form-select {
+    background-color: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #F8FAFC !important;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: rgba(15, 23, 42, 0.8) !important;
+    border-color: #6366F1 !important;
+    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25) !important;
+}
+
+.form-control::placeholder {
+    color: #94A3B8 !important;
+    opacity: 0.7;
+}
+
+/* Stats Cards styling */
+.stats-card {
+    background: rgba(30, 41, 59, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Text contrast overrides for dark theme readability */
+.text-muted {
+    color: #94A3B8 !important;
+}
+
+.card-title {
+    color: #F8FAFC !important;
+}
+

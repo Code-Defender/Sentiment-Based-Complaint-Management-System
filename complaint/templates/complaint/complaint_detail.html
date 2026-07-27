@@ -1,0 +1,111 @@
+{% extends 'complaint/base.html' %}
+
+{% block title %}{{ complaint.title }} | SmartResolve{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm px-3">&larr; Back to Dashboard</a>
+</div>
+
+<div class="row g-4">
+    <!-- Main Detail Col -->
+    <div class="col-lg-8">
+        <div class="card card-glass shadow-lg border-0 h-100">
+            <div class="card-body p-5 d-flex flex-column h-100">
+                <h1 class="h2 fw-bold text-white mb-3">{{ complaint.title }}</h1>
+                
+                <div class="d-flex gap-3 text-muted fs-8 mb-4 pb-3 border-bottom border-secondary">
+                    <span>👤 Submitted by <strong class="text-light">{{ complaint.user.username }}</strong></span>
+                    <span>📅 Created on {{ complaint.created_at|date:"M d, Y H:i" }}</span>
+                </div>
+                
+                <div class="text-light fs-6 mb-5 flex-grow-1" style="line-height: 1.8; white-space: pre-line;">
+                    {{ complaint.description }}
+                </div>
+                
+                {% if complaint.user == request.user %}
+                    <div class="d-flex gap-2 pt-4 mt-auto border-top border-secondary">
+                        <a href="{% url 'complaint_edit' complaint.pk %}" class="btn btn-outline-light btn-sm px-4">Edit Complaint</a>
+                        <a href="{% url 'complaint_delete' complaint.pk %}" class="btn btn-outline-danger btn-sm px-4">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar Col -->
+    <div class="col-lg-4">
+        <div class="d-flex flex-column gap-4">
+            <!-- Details Card -->
+            <div class="card card-glass shadow border-0">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold text-white mb-4 pb-2 border-bottom border-secondary">Status & Severity</h5>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted fw-semibold fs-7">Status</span>
+                        <span>
+                            {% if complaint.status == 'Pending' %}
+                                <span class="badge bg-secondary text-light badge-custom">Pending</span>
+                            {% elif complaint.status == 'In Progress' %}
+                                <span class="badge bg-primary text-light badge-custom">In Progress</span>
+                            {% else %}
+                                <span class="badge bg-success text-light badge-custom">Resolved</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-muted fw-semibold fs-7">Category</span>
+                        <span class="text-primary fw-bold fs-7">{{ complaint.get_category_display }}</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-0">
+                        <span class="text-muted fw-semibold fs-7">AI Priority</span>
+                        <span>
+                            {% if complaint.priority == 'Low' %}
+                                <span class="badge bg-info text-dark badge-custom">Low</span>
+                            {% elif complaint.priority == 'Medium' %}
+                                <span class="badge bg-warning text-dark badge-custom">Medium</span>
+                            {% else %}
+                                <span class="badge bg-danger text-light badge-custom">High</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TextBlob AI Analysis -->
+            <div class="card card-glass shadow border-0">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold text-white mb-3 pb-2 border-bottom border-secondary">AI Sentiment Analysis</h5>
+                    
+                    <div class="alert alert-info bg-dark bg-opacity-25 border-info text-light fs-7 mb-0 p-3 shadow-sm">
+                        <div class="d-flex align-items-center gap-2 fw-bold text-info mb-2">
+                            <span>🤖</span> TextBlob Insights
+                        </div>
+                        {% if complaint.sentiment_score is not None %}
+                            <div class="mb-2">
+                                Sentiment Polarity: 
+                                <span class="badge bg-secondary text-light font-monospace fw-bold fs-8">
+                                    {{ complaint.sentiment_score|floatformat:2 }}
+                                </span>
+                            </div>
+                            <p class="mb-0 text-muted fs-8">
+                                {% if complaint.sentiment_score < -0.25 %}
+                                    The text exhibits a <strong>highly frustrated/negative</strong> sentiment. Priority auto-escalated to <strong>High</strong>.
+                                {% elif complaint.sentiment_score <= 0.15 %}
+                                    The text is evaluated as <strong>neutral or moderately dissatisfied</strong>. Priority assigned: <strong>Medium</strong>.
+                                {% else %}
+                                    The text exhibits a <strong>positive or highly polite</strong> sentiment. Priority auto-assigned: <strong>Low</strong>.
+                                {% endif %}
+                            </p>
+                        {% else %}
+                            <p class="mb-0 text-muted fs-8">No AI analysis data available for this complaint.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

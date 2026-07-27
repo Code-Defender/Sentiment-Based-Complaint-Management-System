@@ -1,0 +1,29 @@
+{% extends 'complaint/base.html' %}
+
+{% block title %}Delete Complaint | SmartResolve{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="col-sm-10 col-md-8 col-lg-6">
+        <div class="card card-glass border-danger shadow-lg">
+            <div class="card-body p-5">
+                <h2 class="text-danger fw-bold mb-3">Delete Complaint</h2>
+                <p class="text-white fs-6 mb-4">
+                    Are you sure you want to delete the complaint: <strong class="text-light">"{{ complaint.title }}"</strong>?
+                </p>
+                <p class="text-muted fs-7 mb-5">
+                    This action cannot be undone. All database records associated with this complaint will be permanently removed.
+                </p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-flex gap-3">
+                        <button type="submit" class="btn btn-danger px-4 fw-semibold">Confirm Delete</button>
+                        <a href="{% url 'complaint_detail' complaint.pk %}" class="btn btn-outline-secondary px-4 fw-semibold">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
